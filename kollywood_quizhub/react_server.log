@@ -11,9 +11,9 @@ asset bundle.js 1.43 MiB [emitted] (name: main)
 asset index.html 1.92 KiB [emitted]
 runtime modules 27.5 KiB 14 modules
 modules by path ./node_modules/ 1.24 MiB 31 modules
-modules by path ./src/ 43.9 KiB
+modules by path ./src/ 41.8 KiB
   modules by path ./src/*.css 9.42 KiB 4 modules
-  modules by path ./src/*.js 34.5 KiB
+  modules by path ./src/*.js 32.3 KiB
     ./src/index.js 619 bytes [built] [code generated]
     + 2 modules
 modules by path ./.ve/ 15.1 KiB
@@ -24,98 +24,55 @@ modules by path ./.ve/ 15.1 KiB
     ./.ve/EditorOverlay.css 2.25 KiB [built] [code generated]
     ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
   ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1346 ms
+
+ERROR in ./src/tmdbApi.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/src/tmdbApi.js: Missing semicolon. (40:14)
+
+  38 |   }
+  39 |   return [];
+> 40 | } page - Which page of results to fetch (default 1)
+     |               ^
+  41 |  * @returns {Promise<Object>}
+  42 |
+  43 | /**
+    at constructor (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:363:19)
+    at JSXParserMixin.raise (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:6609:19)
+    at JSXParserMixin.semicolon (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:6906:10)
+    at JSXParserMixin.parseExpressionStatement (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13204:10)
+    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12818:19)
+    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12685:17)
+    at JSXParserMixin.parseModuleItem (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12662:17)
+    at JSXParserMixin.parseBlockOrModuleBlockBody (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13235:36)
+    at JSXParserMixin.parseBlockBody (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13228:10)
+    at JSXParserMixin.parseProgram (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12541:10)
+    at JSXParserMixin.parseTopLevel (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12531:25)
+    at JSXParserMixin.parse (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:14410:10)
+    at parse (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:14444:38)
+    at parser (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/parser/index.js:41:34)
+    at parser.next (<anonymous>)
+    at normalizeFile (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+    at normalizeFile.next (<anonymous>)
+    at run (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/transformation/index.js:22:50)
+    at run.next (<anonymous>)
+    at transform (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/transform.js:22:33)
+    at transform.next (<anonymous>)
+    at step (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/gensync/index.js:261:32)
+    at /home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/gensync/index.js:273:13
+    at async.call.result.err.err (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/gensync/index.js:223:11)
+ @ ./src/App.js 3:0-91 62:46-66 62:71-91
+ @ ./src/index.js 5:0-24 13:32-35
+
+webpack 5.99.9 compiled with 1 error in 1449 ms
 assets by status 1.92 KiB [cached] 1 asset
-assets by path *.js 1.44 MiB
+assets by path *.js 1.48 MiB
   asset bundle.js 1.43 MiB [emitted] (name: main)
-  asset main.5a371931439b46c70270.hot-update.js 4.89 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.5a371931439b46c70270.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.44 MiB = bundle.js 1.43 MiB main.5a371931439b46c70270.hot-update.js 4.89 KiB
+  asset main.25aaa2a2539ab499c674.hot-update.js 44.9 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.25aaa2a2539ab499c674.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.48 MiB = bundle.js 1.43 MiB main.25aaa2a2539ab499c674.hot-update.js 44.9 KiB
 cached modules 1.26 MiB [cached] 41 modules
 runtime modules 27.5 KiB 14 modules
-javascript modules 31.7 KiB
+javascript modules 35 KiB
   ./src/App.js 31.7 KiB [code generated]
-  ./src/tmdbApi.js 39 bytes [built] [code generated] [1 error]
-
-ERROR in ./src/tmdbApi.js
-Module build failed (from ./node_modules/babel-loader/lib/index.js):
-SyntaxError: /home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/src/tmdbApi.js: Missing semicolon. (40:14)
-
-  38 |   }
-  39 |   return [];
-> 40 | } page - Which page of results to fetch (default 1)
-     |               ^
-  41 |  * @returns {Promise<Object>}
-  42 |
-  43 | /**
-    at constructor (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:363:19)
-    at JSXParserMixin.raise (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:6609:19)
-    at JSXParserMixin.semicolon (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:6906:10)
-    at JSXParserMixin.parseExpressionStatement (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13204:10)
-    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12818:19)
-    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12685:17)
-    at JSXParserMixin.parseModuleItem (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12662:17)
-    at JSXParserMixin.parseBlockOrModuleBlockBody (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13235:36)
-    at JSXParserMixin.parseBlockBody (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13228:10)
-    at JSXParserMixin.parseProgram (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12541:10)
-    at JSXParserMixin.parseTopLevel (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12531:25)
-    at JSXParserMixin.parse (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:14410:10)
-    at parse (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:14444:38)
-    at parser (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/parser/index.js:41:34)
-    at parser.next (<anonymous>)
-    at normalizeFile (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
-    at normalizeFile.next (<anonymous>)
-    at run (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/transformation/index.js:22:50)
-    at run.next (<anonymous>)
-    at transform (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/transform.js:22:33)
-    at transform.next (<anonymous>)
-    at step (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/gensync/index.js:261:32)
-    at /home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/gensync/index.js:273:13
-    at async.call.result.err.err (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/gensync/index.js:223:11)
- @ ./src/App.js 3:0-91 62:46-66 62:71-91
- @ ./src/index.js 5:0-24 13:32-35
-
-webpack 5.99.9 compiled with 1 error in 53 ms
-assets by status 1.43 MiB [cached] 2 assets
-cached modules 1.29 MiB (javascript) 27.5 KiB (runtime) [cached] 56 modules
-./src/tmdbApi.js 39 bytes [built] [1 error]
-
-ERROR in ./src/tmdbApi.js
-Module build failed (from ./node_modules/babel-loader/lib/index.js):
-SyntaxError: /home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/src/tmdbApi.js: Missing semicolon. (40:14)
-
-  38 |   }
-  39 |   return [];
-> 40 | } page - Which page of results to fetch (default 1)
-     |               ^
-  41 |  * @returns {Promise<Object>}
-  42 |
-  43 | /**
-    at constructor (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:363:19)
-    at JSXParserMixin.raise (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:6609:19)
-    at JSXParserMixin.semicolon (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:6906:10)
-    at JSXParserMixin.parseExpressionStatement (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13204:10)
-    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12818:19)
-    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12685:17)
-    at JSXParserMixin.parseModuleItem (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12662:17)
-    at JSXParserMixin.parseBlockOrModuleBlockBody (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13235:36)
-    at JSXParserMixin.parseBlockBody (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13228:10)
-    at JSXParserMixin.parseProgram (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12541:10)
-    at JSXParserMixin.parseTopLevel (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12531:25)
-    at JSXParserMixin.parse (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:14410:10)
-    at parse (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:14444:38)
-    at parser (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/parser/index.js:41:34)
-    at parser.next (<anonymous>)
-    at normalizeFile (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
-    at normalizeFile.next (<anonymous>)
-    at run (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/transformation/index.js:22:50)
-    at run.next (<anonymous>)
-    at transform (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/transform.js:22:33)
-    at transform.next (<anonymous>)
-    at step (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/gensync/index.js:261:32)
-    at /home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/gensync/index.js:273:13
-    at async.call.result.err.err (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/gensync/index.js:223:11)
- @ ./src/App.js 3:0-91 62:46-66 62:71-91
- @ ./src/index.js 5:0-24 13:32-35
-
-webpack 5.99.9 compiled with 1 error in 31 ms
+  ./src/tmdbApi.js 3.3 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 80 ms
