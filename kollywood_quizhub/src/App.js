@@ -674,8 +674,27 @@ function App() {
           </ul>
           )}
           <div style={{ marginTop: 24, display: "flex", gap: 16 }}>
-            <button className="btn btn-large" onClick={handleRestart}>Try Again</button>
-            <button className="btn btn-large" style={{ background: "#aaa", color: "#222" }} onClick={handleLogout}>
+            <button
+              className="btn btn-large"
+              style={{
+                background: "var(--secondary)",
+                color: "var(--primary)",
+              }}
+              onClick={() => {
+                setRoute("game-select");
+                setQuizType(null);
+                setQuizData(null);
+                setQuizIndex(0);
+                setAnswers([]);
+              }}
+            >
+              Back to Dashboard
+            </button>
+            <button
+              className="btn btn-large"
+              style={{ background: "#aaa", color: "#222" }}
+              onClick={handleLogout}
+            >
               Logout
             </button>
           </div>
