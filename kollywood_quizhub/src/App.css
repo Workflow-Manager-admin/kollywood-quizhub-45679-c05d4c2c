@@ -7,6 +7,9 @@
   --border-color: #fd088a55;
 }
 
+/* Removed any problematic PUBLIC_URL references that resulted in build failure.
+   This file now only uses basic color variables for the required white, pink, and black theme. */
+
 body {
   margin: 0;
   font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;

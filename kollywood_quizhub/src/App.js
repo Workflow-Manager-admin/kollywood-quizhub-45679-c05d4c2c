@@ -483,14 +483,17 @@ function pickRandom(arr, n) {
   return shuffleArray(arr).slice(0, n);
 }
 
-// --- Styles ---
+/*
+ * --- Theme Styles Using CSS Variables ---
+ * All inline style objects now reference the white, pink, and black theme using CSS variables for full consistency.
+ */
 const inputStyle = {
   padding: "11px 13px",
-  border: "1.5px solid #fd088a55",
+  border: "1.5px solid var(--border-color)",
   borderRadius: 5,
   fontSize: "1.09em",
-  background: "#fff",
-  color: "#080808",
+  background: "var(--primary)",
+  color: "var(--accent)",
   marginBottom: 4,
   outline: "none",
   boxShadow: "0 1px 6px #fd088a06",
@@ -498,7 +501,7 @@ const inputStyle = {
 };
 // PUBLIC_INTERFACE
 const flatLinkStyle = {
-  color: "#fd088a",
+  color: "var(--secondary)",
   background: "none",
   border: "none",
   fontWeight: 600,
@@ -510,18 +513,18 @@ const flatLinkStyle = {
   textDecoration: "underline"
 };
 const quizCardStyle = {
-  background: "#fff",
+  background: "var(--primary)",
   borderRadius: 15,
   padding: "32px 22px 22px",
   boxShadow: "0 2px 16px #fd088a14",
   margin: "0 auto",
   width: "100%",
   maxWidth: 430,
-  color: "#080808"
+  color: "var(--accent)"
 };
 // PUBLIC_INTERFACE
 const quizSubTitleStyle = {
-  color: "#fd088a", fontWeight: 600, fontSize: "1.12em", letterSpacing: 0.2
+  color: "var(--secondary)", fontWeight: 600, fontSize: "1.12em", letterSpacing: 0.2
 };
 const posterStyle = {
   width: 180,
