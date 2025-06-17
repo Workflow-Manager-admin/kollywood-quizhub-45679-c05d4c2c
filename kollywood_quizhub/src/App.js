@@ -362,7 +362,14 @@ function App() {
     if (quizType === 'movie-title-poster') {
       quizPrompt = <>
         <div>
-          <img src={q.poster} alt="Movie poster" style={posterStyle} />
+          <img
+            src={q.poster}
+            alt="Movie poster"
+            style={{
+              ...posterStyle,
+              filter: quizType === 'movie-title-poster' ? 'blur(8px)' : undefined
+            }}
+          />
         </div>
         <div style={{ fontWeight: 600, margin: "22px 0 8px", fontSize: "1.15rem" }}>
           What is the title of this Kollywood movie?
