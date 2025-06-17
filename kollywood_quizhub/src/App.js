@@ -405,17 +405,41 @@ function App() {
             <span
               style={{
                 display: "inline-block",
-                padding: "11px 28px",
-                background: "var(--secondary)",
+                padding: "14px 30px",
+                background: "linear-gradient(90deg,#fd088a 60%,#be39af 100%)",
                 color: "var(--primary)",
-                borderRadius: "23px",
+                borderRadius: "32px",
                 fontWeight: 700,
-                fontSize: "1.27rem",
-                letterSpacing: 0.14,
-                boxShadow: "0 2px 10px #fd088a18"
+                fontSize: "1.34rem",
+                letterSpacing: 0.18,
+                boxShadow: "0 2px 12px #fd088a22",
+                border: "2.25px solid #be39af",
+                marginBottom: 8
               }}>
-              {/* Clue: Character */}
-              {q.character ? q.character : "(Unknown character)"}
+              {/* Character Name Clue (label + value) */}
+              <span style={{
+                textTransform: "uppercase",
+                fontSize: "0.81em",
+                letterSpacing: 1.2,
+                color: "#fffbe0",
+                marginRight: 10,
+                fontWeight: 600,
+                opacity: 0.82,
+                filter: "brightness(0.98)"
+              }}>
+                CHARACTER CLUE:
+              </span>
+              <span
+                style={{
+                  color: "#fff",
+                  fontWeight: 800,
+                  textShadow: "0px 1.8px 6px #be39af22, 0 0.5px 0 #fd088a74",
+                  fontSize: "1.15em",
+                  marginLeft: 5
+                }}
+              >
+                {q.character ? q.character : "(Unknown Character)"}
+              </span>
             </span>
           </div>
           <div style={{
@@ -426,15 +450,20 @@ function App() {
             color: "#be39af"
           }}>
             {/* Optionally show the actor name in smaller, subtle text */}
-            {q.actorName && <span>Played by <span style={{color: "#ff9999", fontWeight: 600}}>{q.actorName}</span></span>}
+            {q.actorName &&
+              <span>
+                <span style={{color: "#888", fontWeight: 500}}>Played by</span>{" "}
+                <span style={{color: "#fff", background: "#be39af", padding: "1.5px 10px", borderRadius: 10, fontWeight: 600, fontSize: "0.98em"}}>{q.actorName}</span>
+              </span>}
           </div>
           <div style={{
-            marginTop: 18,
+            marginTop: 20,
+            marginBottom: 2,
             textAlign: "center",
             fontWeight: 600,
             fontSize: "1.13rem"
           }}>
-            Which of the following is a movie featuring this character?
+            Which of the following movies features this character?
           </div>
         </>
       );
