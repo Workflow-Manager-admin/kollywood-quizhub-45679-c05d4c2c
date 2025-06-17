@@ -1,0 +1,4 @@
+{
+    "command": "npm install && npx tsc --noEmit && npm test -- --ci",
+    "working_directory": "/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub"
+}
