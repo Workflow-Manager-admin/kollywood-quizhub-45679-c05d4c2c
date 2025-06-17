@@ -94,29 +94,46 @@ function App() {
           }));
           break;
         case 'actor-movies': {
-          // Choose movies with at least 1 actor in 'cast'
-          const actorQuestions = [];
-          let i = 0;
-          while (actorQuestions.length < 10 && i < shuffled.length) {
-            let movie = shuffled[i];
-            i++;
-            // Use movie.id to get details with cast
-            // API has rate limit so we avoid too many calls, for demo pick based on title words
-            // Let's simulate a random "actor" (from title words) for the purposes of the example
-            const fakeActor = movie.title.split(" ")[0];
-            actorQuestions.push({
-              id: movie.id,
-              movieTitle: movie.title,
-              actor: fakeActor,
-              poster: `https://image.tmdb.org/t/p/w300${movie.poster_path}`,
-              correct: movie.title,
-              options: shuffleArray([
-                movie.title,
-                ...pickRandom(shuffled.filter(x => x.id !== movie.id).map(x => x.title), 3)
-              ])
-            });
+          // For each movie, fetch its credits and pick a random character
+          // Returns a promise that resolves to a list of questions
+          async function prepareCharacterQuestions() {
+            const actorQuestions = [];
+            let i = 0;
+            while (actorQuestions.length < 10 && i < shuffled.length) {
+              const movie = shuffled[i];
+              i++;
+              // Fetch credits for this movie
+              try {
+                const creditsResp = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=5bc67d3b06aecbd18121a3cbbc16eb59`);
+                if (!creditsResp.ok) continue;
+                const credits = await creditsResp.json();
+                // Pick a real character-actor pair from the cast (with recognizable character names)
+                const validCast = credits.cast && credits.cast.filter(
+                  c => !!c.character && !!c.name && c.character.length < 40
+                );
+                if (!validCast || validCast.length === 0) continue;
+                const pair = validCast[Math.floor(Math.random() * validCast.length)];
+                actorQuestions.push({
+                  id: movie.id,
+                  movieTitle: movie.title,
+                  // Set clue as character (not actor!)
+                  character: pair.character,
+                  actorName: pair.name,
+                  poster: `https://image.tmdb.org/t/p/w300${movie.poster_path}`,
+                  correct: movie.title,
+                  options: shuffleArray([
+                    movie.title,
+                    ...pickRandom(shuffled.filter(x => x.id !== movie.id).map(x => x.title), 3)
+                  ])
+                });
+              } catch (e) {
+                // Failed fetch, just skip and continue
+                continue;
+              }
+            }
+            return actorQuestions;
           }
-          questions = actorQuestions;
+          questions = await prepareCharacterQuestions();
           break;
         }
         case 'movie-overview-title':
@@ -383,12 +400,20 @@ function App() {
         <div>
           <span style={{
             fontWeight: 600, fontSize: "1.1rem", color: "var(--secondary)"
-          }}>Actor: {q.actor}</span>
+          }}>
+            Character: {q.character ? q.character : "(unknown)"}
+          </span>
+        </div>
+        <div style={{
+          marginTop: 10, fontWeight: 400, fontSize: "1.08rem", color: "#be39af"
+        }}>
+          {/* Optionally show the actor name in smaller, subtle text */}
+          {q.actorName && <span>Played by: <span style={{color: "#ff9999"}}>{q.actorName}</span></span>}
         </div>
         <div style={{
           marginTop: 18, fontWeight: 600, fontSize: "1.1rem"
         }}>
-          Which of the following is a movie starring this actor?
+          Which of the following is a movie featuring this character?
         </div>
       </>;
     } else if (quizType === 'movie-overview-title') {
@@ -499,14 +524,28 @@ function App() {
                 }}>
                   {answers[idx]?.isCorrect ? "✓" : "✗"}
                 </span>
-                {q.title}
-                <span style={{
-                  color: "#bbb",
-                  fontSize: "0.95em",
-                  marginLeft: 10
-                }}>
-                  ({q.overview.slice(0, 48)}…)
-                </span>
+                {/* For actor-movies type, show character clue */}
+                {quizType === "actor-movies"
+                  ? <>
+                      <span style={{color: "#fd088a", marginRight: 8}}>
+                        {q.character ? q.character : "(character unknown)"}
+                      </span>
+                      <span style={{color: "#bbb", fontSize: "0.93em", marginLeft: 5}}>
+                        <i>{q.actorName && `by ${q.actorName}`}</i>
+                      </span>
+                      <span style={{marginLeft: 12}}>{q.correct}</span>
+                    </>
+                  : <>
+                      {q.title}
+                      <span style={{
+                        color: "#bbb",
+                        fontSize: "0.95em",
+                        marginLeft: 10
+                      }}>
+                        ({q.overview?.slice(0, 48)}…)
+                      </span>
+                    </>
+                }
               </li>
             ))}
           </ul>

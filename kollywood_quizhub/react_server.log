@@ -11,9 +11,9 @@ asset bundle.js 1.43 MiB [emitted] (name: main)
 asset index.html 1.92 KiB [emitted]
 runtime modules 27.5 KiB 14 modules
 modules by path ./node_modules/ 1.24 MiB 31 modules
-modules by path ./src/ 45 KiB
+modules by path ./src/ 43.9 KiB
   modules by path ./src/*.css 9.42 KiB 4 modules
-  modules by path ./src/*.js 35.6 KiB
+  modules by path ./src/*.js 34.5 KiB
     ./src/index.js 619 bytes [built] [code generated]
     + 2 modules
 modules by path ./.ve/ 15.1 KiB
@@ -24,86 +24,34 @@ modules by path ./.ve/ 15.1 KiB
     ./.ve/EditorOverlay.css 2.25 KiB [built] [code generated]
     ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
   ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1320 ms
+webpack 5.99.9 compiled successfully in 1523 ms
 assets by status 1.92 KiB [cached] 1 asset
-assets by path *.js 1.44 MiB
+assets by path *.js 1.47 MiB
   asset bundle.js 1.43 MiB [emitted] (name: main)
-  asset main.142b0d248265163a5493.hot-update.js 4.96 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.142b0d248265163a5493.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.44 MiB = bundle.js 1.43 MiB main.142b0d248265163a5493.hot-update.js 4.96 KiB
-cached modules 1.29 MiB [cached] 42 modules
+  asset main.7b6f32dba9a94afc6050.hot-update.js 41.7 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.7b6f32dba9a94afc6050.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.47 MiB = bundle.js 1.43 MiB main.7b6f32dba9a94afc6050.hot-update.js 41.7 KiB
+cached modules 1.27 MiB [cached] 42 modules
 runtime modules 27.5 KiB 14 modules
-./src/tmdbApi.js 3.31 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 41 ms
+./src/App.js 32.6 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 148 ms
 assets by status 1.92 KiB [cached] 1 asset
-assets by path *.js 1.44 MiB
+assets by path *.js 1.47 MiB
   asset bundle.js 1.43 MiB [emitted] (name: main)
-  asset main.cf089bc803c2c6a15f86.hot-update.js 6.76 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.cf089bc803c2c6a15f86.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.44 MiB = bundle.js 1.43 MiB main.cf089bc803c2c6a15f86.hot-update.js 6.76 KiB
-cached modules 1.26 MiB [cached] 41 modules
+  asset main.3fbd4fa7d6e8aacba4cd.hot-update.js 42.5 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.3fbd4fa7d6e8aacba4cd.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.47 MiB = bundle.js 1.43 MiB main.3fbd4fa7d6e8aacba4cd.hot-update.js 42.5 KiB
+cached modules 1.27 MiB [cached] 42 modules
 runtime modules 27.5 KiB 14 modules
-javascript modules 31.7 KiB
-  ./src/App.js 31.7 KiB [code generated]
-  ./src/tmdbApi.js 39 bytes [built] [code generated] [1 error]
-
-ERROR in ./src/tmdbApi.js
-Module build failed (from ./node_modules/babel-loader/lib/index.js):
-SyntaxError: /home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/src/tmdbApi.js: Identifier 'fetchMovieMainCharacters' has already been declared. (95:22)
-
-  93 |  * @returns {Promise<Array<string>>} - Array of main character names
-  94 |  */
-> 95 | export async function fetchMovieMainCharacters(movieId, maxCharacters = 3) {
-     |                       ^
-  96 |   const url = `${TMDB_API_BASE}/movie/${movieId}/credits?api_key=${TMDB_API_KEY}`;
-  97 |   const response = await fetch(url);
-  98 |   if (!response.ok) {
-    at constructor (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:363:19)
-    at JSXParserMixin.raise (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:6609:19)
-    at ScopeHandler.checkRedeclarationInScope (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:1626:19)
-    at ScopeHandler.declareName (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:1592:12)
-    at JSXParserMixin.registerFunctionStatementId (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13381:16)
-    at JSXParserMixin.parseFunction (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13365:12)
-    at JSXParserMixin.parseFunctionStatement (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13044:17)
-    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12809:25)
-    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12685:17)
-    at JSXParserMixin.parseStatementListItem (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12665:17)
-    at JSXParserMixin.parseExportDeclaration (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13849:17)
-    at JSXParserMixin.maybeParseExportDeclaration (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13808:31)
-    at JSXParserMixin.parseExport (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13727:29)
-    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12797:27)
-    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12685:17)
-    at JSXParserMixin.parseModuleItem (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12662:17)
-    at JSXParserMixin.parseBlockOrModuleBlockBody (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13235:36)
-    at JSXParserMixin.parseBlockBody (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:13228:10)
-    at JSXParserMixin.parseProgram (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12541:10)
-    at JSXParserMixin.parseTopLevel (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:12531:25)
-    at JSXParserMixin.parse (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:14410:10)
-    at parse (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/parser/lib/index.js:14444:38)
-    at parser (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/parser/index.js:41:34)
-    at parser.next (<anonymous>)
-    at normalizeFile (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
-    at normalizeFile.next (<anonymous>)
-    at run (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/transformation/index.js:22:50)
-    at run.next (<anonymous>)
-    at transform (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/@babel/core/lib/transform.js:22:33)
-    at transform.next (<anonymous>)
-    at step (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/gensync/index.js:261:32)
-    at /home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/gensync/index.js:273:13
-    at async.call.result.err.err (/home/kavia/workspace/code-generation/kollywood-quizhub-45679-c05d4c2c/kollywood_quizhub/node_modules/gensync/index.js:223:11)
- @ ./src/App.js 3:0-91 62:46-66 62:71-91
- @ ./src/index.js 5:0-24 13:32-35
-
-webpack 5.99.9 compiled with 1 error in 48 ms
+./src/App.js 33.2 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 235 ms
 assets by status 1.92 KiB [cached] 1 asset
-assets by path *.js 1.44 MiB
+assets by path *.js 1.48 MiB
   asset bundle.js 1.43 MiB [emitted] (name: main)
-  asset main.fa5ee4dffa3af2e64e1d.hot-update.js 3.75 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.fa5ee4dffa3af2e64e1d.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.44 MiB = bundle.js 1.43 MiB main.fa5ee4dffa3af2e64e1d.hot-update.js 3.75 KiB
-cached modules 1.26 MiB [cached] 41 modules
+  asset main.d596139a2c00ddddbdc3.hot-update.js 44.1 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.d596139a2c00ddddbdc3.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.48 MiB = bundle.js 1.43 MiB main.d596139a2c00ddddbdc3.hot-update.js 44.1 KiB
+cached modules 1.27 MiB [cached] 42 modules
 runtime modules 27.5 KiB 14 modules
-javascript modules 33.9 KiB
-  ./src/App.js 31.7 KiB [code generated]
-  ./src/tmdbApi.js 2.22 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 54 ms
+./src/App.js 34.3 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 129 ms
