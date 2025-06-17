@@ -247,10 +247,11 @@ function App() {
     const currentQ = quizData.questions[quizIndex];
     let isCorrect;
     if (quizType === 'release-year-title' && Array.isArray(answer)) {
-      // Validate the timeline order
+      // Validate that submitted titles are in the correct timeline order
+      const canonical = (currentQ.optionsUnshuffled || currentQ.group);
       isCorrect =
-        answer.length === currentQ.optionsUnshuffled.length &&
-        answer.every((title, i) => title === currentQ.optionsUnshuffled[i].movieTitle);
+        answer.length === canonical.length &&
+        answer.every((title, i) => title === canonical[i].movieTitle);
     } else {
       isCorrect = answer === currentQ.correct;
     }
@@ -519,7 +520,7 @@ function App() {
         </div>
       </>;
     } else if (quizType === 'release-year-title') {
-      // Drag-and-drop timeline ordering UI
+      // Refactored: Drag-and-drop timeline ordering UI
       quizPrompt = (
         <MovieTimelineSortQuiz
           movies={q.options}
@@ -539,24 +540,26 @@ function App() {
             <span style={quizSubTitleStyle}>{`Question ${quizIndex + 1} of ${quizData.questions.length}`}</span>
           </div>
           {quizPrompt}
-          <div style={{ display: 'flex', flexDirection: "column", gap: 12, marginTop: 12 }}>
-            {q.options.map(option => (
-              <button
-                className="btn btn-large"
-                key={option}
-                style={{
-                  backgroundColor:
-                    answers[quizIndex] && answers[quizIndex].answer === option
-                      ? "#fd088a"
-                      : undefined,
-                  border: "none"
-                }}
-                tabIndex={0}
-                onClick={() => handleAnswer(option)}
-                disabled={answers[quizIndex]}
-              >{option}</button>
-            ))}
-          </div>
+          {quizType !== 'release-year-title' && (
+            <div style={{ display: 'flex', flexDirection: "column", gap: 12, marginTop: 12 }}>
+              {q.options.map(option => (
+                <button
+                  className="btn btn-large"
+                  key={option}
+                  style={{
+                    backgroundColor:
+                      answers[quizIndex] && answers[quizIndex].answer === option
+                        ? "#fd088a"
+                        : undefined,
+                    border: "none"
+                  }}
+                  tabIndex={0}
+                  onClick={() => handleAnswer(option)}
+                  disabled={answers[quizIndex]}
+                >{option}</button>
+              ))}
+            </div>
+          )}
           <div style={{ marginTop: 26, display: 'flex', justifyContent: 'space-between', width: "100%" }}>
             <button
               className="btn"
@@ -756,92 +759,70 @@ function App() {
   /**
    * MovieTimelineSortQuiz - Drag and drop reorder quiz for movie timeline (release-year-title)
    * Props:
-   *   movies: array of {title, year} or array of titles (to display)
-   *   correctOrder: array of correct movie objects (with year info); if missing, will use movies
-   *   onSubmit: callback(selectedOrderArr) => void
-   *   disabled: prevent submit and interaction
-   *   prevAnswer: previously submitted order (array) (optional, for showing correctness)
+   *   movies: array of titles (shuffled for question)
+   *   correctOrder: array of { movieTitle, year... } in ascending release year for checking
+   *   onSubmit: function([reorderedTitles]) - submit handler
+   *   disabled, prevAnswer: see usage above
    */
   // PUBLIC_INTERFACE
   function MovieTimelineSortQuiz({ movies, correctOrder, onSubmit, disabled, prevAnswer }) {
-    // movies is a shuffled array of titles or objects; correctOrder reflects ascending year order needed
+    // Internal order state - just an array of movie titles (string)
     const [order, setOrder] = React.useState(
       Array.isArray(prevAnswer) ? prevAnswer.slice() : [...(movies || [])]
     );
+    const [dragged, setDragged] = React.useState(null);
     const [submitted, setSubmitted] = React.useState(!!prevAnswer);
 
-    // Simple drag state (index of dragged item)
-    const [draggedIdx, setDraggedIdx] = React.useState(null);
+    React.useEffect(() => {
+      if (Array.isArray(prevAnswer)) setSubmitted(true);
+    }, [prevAnswer]);
 
-    // Find years for display: try to get year from correctOrder or movies
-    function getYear(titleOrObj) {
-      // Support if entry is string or {movieTitle, year}
-      if (typeof titleOrObj === "string") {
-        // Find in correctOrder by title
-        const found =
-          correctOrder && correctOrder.find(
-            (e) => e.movieTitle === titleOrObj || e.title === titleOrObj
-          );
-        return found?.year || found?.release_date?.slice(0, 4) || "????";
-      }
-      if (titleOrObj.year) return titleOrObj.year;
-      if (titleOrObj.release_date) return titleOrObj.release_date.slice(0, 4);
-      if (titleOrObj.movieTitle && correctOrder) {
-        const found = correctOrder.find(
-          (e) => e.movieTitle === titleOrObj.movieTitle || e.title === titleOrObj.movieTitle
-        );
-        return found?.year || found?.release_date?.slice(0, 4) || "????";
-      }
-      return "????";
+    // Get the year for a movie title (using correctOrder by title)
+    function getYear(title) {
+      if (!correctOrder) return '';
+      const found = correctOrder.find(
+        m => m.movieTitle === title || m.title === title
+      );
+      return found?.year || (found?.release_date && found.release_date.slice(0, 4)) || '';
     }
 
     // PUBLIC_INTERFACE
-    function isCorrectOrder(arr) {
-      // arr: array of movie titles
-      let yearArr = arr.map(getYear).map((y) => parseInt(y, 10));
-      for (let i = 1; i < yearArr.length; i++) {
-        if (isNaN(yearArr[i - 1]) || isNaN(yearArr[i]) || yearArr[i - 1] > yearArr[i]) {
-          return false;
-        }
+    function isCorrect() {
+      // Return true if 'order' matches correctOrder by movieTitle, in sequence
+      if (!correctOrder || order.length !== correctOrder.length) return false;
+      for (let i = 0; i < order.length; i++) {
+        if (order[i] !== correctOrder[i].movieTitle) return false;
       }
       return true;
     }
 
-    // Drag handlers (no external dependencies, pure React)
-    function handleDragStart(idx) {
-      if (disabled || submitted) return;
-      setDraggedIdx(idx);
+    // Drag logic
+    function onDragStart(idx) {
+      if (submitted || disabled) return;
+      setDragged(idx);
     }
 
-    function handleDragEnter(idx) {
-      if (draggedIdx === null || disabled || submitted) return;
-      if (idx === draggedIdx) return;
-      // Reorder
-      const reordered = order.slice();
-      const [dragItem] = reordered.splice(draggedIdx, 1);
-      reordered.splice(idx, 0, dragItem);
-      setOrder(reordered);
-      setDraggedIdx(idx); // now drag at new location
+    function onDragOver(ev) {
+      ev.preventDefault();
     }
 
-    function handleDragEnd() {
-      setDraggedIdx(null);
+    function onDrop(idx) {
+      if (submitted || disabled || dragged === null || dragged === idx) return;
+      setOrder(order => {
+        const arr = order.slice();
+        const [item] = arr.splice(dragged, 1);
+        arr.splice(idx, 0, item);
+        return arr;
+      });
+      setDragged(null);
     }
-
-    function handleDrop(e) {
-      e.preventDefault();
-      setDraggedIdx(null);
+    function onDragEnd() {
+      setDragged(null);
     }
 
     function handleSubmit() {
-      if (disabled || submitted) return;
       setSubmitted(true);
-      onSubmit(order);
-    }
-
-    let correctness = null;
-    if (submitted || prevAnswer) {
-      correctness = isCorrectOrder(order);
+      if (onSubmit) onSubmit(order);
     }
 
     return (
@@ -870,46 +851,41 @@ function App() {
             marginBottom: 16,
           }}
         >
-          {order.map((movie, idx) => (
+          {order.map((movieTitle, idx) => (
             <li
-              key={typeof movie === "string" ? movie : movie.movieTitle || movie.title}
+              key={movieTitle}
               draggable={!disabled && !submitted}
-              onDragStart={() => handleDragStart(idx)}
-              onDragEnter={() => handleDragEnter(idx)}
-              onDragOver={e => e.preventDefault()}
-              onDrop={handleDrop}
-              onDragEnd={handleDragEnd}
+              onDragStart={() => onDragStart(idx)}
+              onDragOver={onDragOver}
+              onDrop={() => onDrop(idx)}
+              onDragEnd={onDragEnd}
               tabIndex={0}
               style={{
                 userSelect: "none",
-                background: draggedIdx === idx
-                  ? "#fd088a22"
-                  : "#fff",
-                border: correctness == null
-                  ? "2px solid var(--border-color)"
-                  : correctness
-                  ? "2px solid #03da9a"
-                  : "2px solid #fd088a",
+                background: dragged === idx ? "#fd088a22" : "#fff",
+                border: submitted
+                  ? (isCorrect()
+                      ? "2px solid #03da9a"
+                      : "2px solid #fd088a")
+                  : "2px solid var(--border-color)",
                 borderRadius: "9px",
                 marginBottom: 9,
                 padding: "17px 14px",
                 fontWeight: 600,
                 fontSize: "1.11em",
-                color: correctness == null
-                  ? "var(--accent)"
-                  : correctness
-                  ? "#03da9a"
-                  : "#fd088a",
+                color: submitted
+                  ? (isCorrect() ? "#03da9a" : "#fd088a")
+                  : "var(--accent)",
                 outline: "none",
                 cursor: !disabled && !submitted ? "grab" : "default",
-                opacity: draggedIdx === idx ? 0.88 : 1,
-                boxShadow: draggedIdx === idx ? "0 4px 14px #fd088a22" : "0 1px 8px #fd088a08",
+                opacity: dragged === idx ? 0.88 : 1,
+                boxShadow: dragged === idx ? "0 4px 14px #fd088a22" : "0 1px 8px #fd088a08",
                 display: "flex",
                 alignItems: "center",
                 gap: 16,
                 transition: "border 0.15s, box-shadow 0.2s"
               }}
-              aria-label={`Drag to reorder movie: ${typeof movie === "string" ? movie : movie.movieTitle || movie.title}. Release year: ${getYear(movie)}`}
+              aria-label={`Drag to reorder movie: ${movieTitle}. Release year: ${getYear(movieTitle)}`}
             >
               <span style={{
                 fontWeight: 900,
@@ -917,16 +893,14 @@ function App() {
                 marginRight: 10
               }}>☰</span>
               <span>
-                {typeof movie === "string"
-                  ? movie
-                  : movie.movieTitle || movie.title}
+                {movieTitle}
                 <span style={{
                   color: "#bbb",
                   fontSize: "0.97em",
                   marginLeft: 8,
                   fontWeight: 500,
                 }}>
-                  ({getYear(movie)})
+                  ({getYear(movieTitle)})
                 </span>
               </span>
             </li>
@@ -946,22 +920,22 @@ function App() {
         >
           Submit Order
         </button>
-        {submitted || prevAnswer ? (
+        {submitted &&
           <div
             style={{
               marginTop: 7,
-              color: correctness ? "#03da9a" : "#fd088a",
+              color: isCorrect() ? "#03da9a" : "#fd088a",
               fontWeight: 700,
               fontSize: "1.11em",
               textAlign: "center",
             }}
             aria-live="polite"
           >
-            {correctness
+            {isCorrect()
               ? "Correct! 🎉 These movies are in the correct timeline."
               : "Incorrect order. Try to remember their timeline in Kollywood!"}
           </div>
-        ) : null}
+        }
       </div>
     );
   }
