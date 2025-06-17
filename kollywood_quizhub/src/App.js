@@ -885,7 +885,7 @@ function App() {
                 gap: 16,
                 transition: "border 0.15s, box-shadow 0.2s"
               }}
-              aria-label={`Drag to reorder movie: ${movieTitle}. Release year: ${getYear(movieTitle)}`}
+              aria-label={`Drag to reorder movie: ${movieTitle}`}
             >
               <span style={{
                 fontWeight: 900,
@@ -894,14 +894,6 @@ function App() {
               }}>☰</span>
               <span>
                 {movieTitle}
-                <span style={{
-                  color: "#bbb",
-                  fontSize: "0.97em",
-                  marginLeft: 8,
-                  fontWeight: 500,
-                }}>
-                  ({getYear(movieTitle)})
-                </span>
               </span>
             </li>
           ))}
