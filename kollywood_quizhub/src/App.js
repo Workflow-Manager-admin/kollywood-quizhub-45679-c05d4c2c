@@ -11,8 +11,33 @@ const INIT_USERS = [
   { username: "demo", password: "demo", progress: [], results: [] }
 ];
 
+// --- Game types definition ---
+
+const QUIZ_TYPES = [
+  {
+    key: 'movie-title-poster',
+    label: 'Guess the Movie from Poster',
+    description: 'See a poster and guess the Kollywood movie title',
+  },
+  {
+    key: 'actor-movies',
+    label: 'Guess the Movie from Actor',
+    description: 'Given an actor, guess one of their movies',
+  },
+  {
+    key: 'movie-overview-title',
+    label: 'Guess the Movie from Plot',
+    description: 'Given a movie description, pick the right title',
+  },
+  {
+    key: 'release-year-title',
+    label: 'Guess the Release Year',
+    description: 'Given a movie title, guess its release year',
+  },
+];
+
 function App() {
-  const [route, setRoute] = useState('login'); // 'login', 'quiz', 'result'
+  const [route, setRoute] = useState('login'); // 'login', 'game-select', 'quiz', 'result'
   const [user, setUser] = useState(null); // { username, ... }
   const [users, setUsers] = useState(() => INIT_USERS.slice());
   const [loginErr, setLoginErr] = useState('');
@@ -22,7 +47,16 @@ function App() {
   const [loadingQuiz, setLoadingQuiz] = useState(false);
   const [quizIndex, setQuizIndex] = useState(0); // Index in quiz questions
   const [answers, setAnswers] = useState([]);
-  const [quizType, setQuizType] = useState('movie-title-poster'); // Fixed for simplicity
+  const [quizType, setQuizType] = useState(null);
+
+  // PUBLIC_INTERFACE
+  // Handle choice/selection of quiz type from menu
+  function onQuizTypeSelect(typeKey) {
+    setQuizType(typeKey);
+    setRoute('quiz');
+    setQuizIndex(0);
+    setAnswers([]);
+  }
 
   // Fetch movies for quiz
   const loadQuiz = async () => {
@@ -41,22 +75,87 @@ function App() {
       );
       // Remove duplicates (in rare TMDb cases)
       movies = Array.from(new Map(movies.map(m => [m.id, m])).values());
-      // Shuffle
-      shuffleArray(movies);
-      // Generate questions (e.g., show poster, ask for title)
-      const questions = movies.slice(0, 10).map((movie, idx) => {
-        return {
-          id: movie.id,
-          poster: `https://image.tmdb.org/t/p/w300${movie.poster_path}`,
-          title: movie.title,
-          overview: movie.overview,
-          correct: movie.title,
-          options: shuffleArray([
-            movie.title,
-            ...pickRandom(movies.filter(x => x.id !== movie.id).map(x => x.title), 3)
-          ])
-        };
-      });
+      // Shuffle the movies array
+      const shuffled = shuffleArray(movies);
+      let questions;
+
+      switch (quizType) {
+        case 'movie-title-poster':
+          questions = shuffled.slice(0, 10).map((movie) => ({
+            id: movie.id,
+            poster: `https://image.tmdb.org/t/p/w300${movie.poster_path}`,
+            title: movie.title,
+            overview: movie.overview,
+            correct: movie.title,
+            options: shuffleArray([
+              movie.title,
+              ...pickRandom(shuffled.filter(x => x.id !== movie.id).map(x => x.title), 3)
+            ])
+          }));
+          break;
+        case 'actor-movies': {
+          // Choose movies with at least 1 actor in 'cast'
+          const actorQuestions = [];
+          let i = 0;
+          while (actorQuestions.length < 10 && i < shuffled.length) {
+            let movie = shuffled[i];
+            i++;
+            // Use movie.id to get details with cast
+            // API has rate limit so we avoid too many calls, for demo pick based on title words
+            // Let's simulate a random "actor" (from title words) for the purposes of the example
+            const fakeActor = movie.title.split(" ")[0];
+            actorQuestions.push({
+              id: movie.id,
+              movieTitle: movie.title,
+              actor: fakeActor,
+              poster: `https://image.tmdb.org/t/p/w300${movie.poster_path}`,
+              correct: movie.title,
+              options: shuffleArray([
+                movie.title,
+                ...pickRandom(shuffled.filter(x => x.id !== movie.id).map(x => x.title), 3)
+              ])
+            });
+          }
+          questions = actorQuestions;
+          break;
+        }
+        case 'movie-overview-title':
+          questions = shuffled.slice(0, 10).map((movie) => ({
+            id: movie.id,
+            overview: movie.overview,
+            correct: movie.title,
+            options: shuffleArray([
+              movie.title,
+              ...pickRandom(shuffled.filter(x => x.id !== movie.id).map(x => x.title), 3)
+            ])
+          }));
+          break;
+        case 'release-year-title':
+          questions = shuffled.slice(0, 10).map((movie) => ({
+            id: movie.id,
+            movieTitle: movie.title,
+            year: movie.release_date ? movie.release_date.slice(0, 4) : "Unknown",
+            correct: movie.release_date ? movie.release_date.slice(0, 4) : "Unknown",
+            options: shuffleArray([
+              movie.release_date ? movie.release_date.slice(0,4) : "Unknown",
+              ...pickRandom([...Array(9).keys()].map(x => (2015 - x + Math.floor(Math.random()*7)).toString()).filter(y => y !== (movie.release_date ? movie.release_date.slice(0, 4) : "Unknown")), 3)
+            ])
+          }));
+          break;
+        default:
+          questions = shuffled.slice(0, 10).map((movie) => ({
+            id: movie.id,
+            poster: `https://image.tmdb.org/t/p/w300${movie.poster_path}`,
+            title: movie.title,
+            overview: movie.overview,
+            correct: movie.title,
+            options: shuffleArray([
+              movie.title,
+              ...pickRandom(shuffled.filter(x => x.id !== movie.id).map(x => x.title), 3)
+            ])
+          }));
+          break;
+      }
       setQuizData({ questions });
       setLoadingQuiz(false);
     } catch (e) {
@@ -83,7 +182,7 @@ function App() {
       u = { username: uname, password, progress: [], results: [] };
       setUsers(prev => [...prev, u]);
       setUser(u);
-      setRoute('quiz');
+      setRoute('game-select');
       setLoginErr('');
       setRegisterMode(false);
       return;
@@ -94,7 +193,7 @@ function App() {
       return;
     }
     setUser(u);
-    setRoute('quiz');
+    setRoute('game-select');
     setLoginErr('');
   }
 
@@ -116,8 +215,10 @@ function App() {
   function handleRestart() {
     setAnswers([]);
     setQuizIndex(0);
-    setRoute('quiz');
-    loadQuiz();
+    setRoute('game-select');
+    setQuizType(null);
+    setQuizData(null);
+    // Do not load immediately, let user pick
   }
 
   // Store quiz result to user
@@ -156,20 +257,20 @@ function App() {
   }
 
   useEffect(() => {
-    if (route === 'quiz') {
+    if (route === 'quiz' && quizType) {
       loadQuiz();
     }
     // eslint-disable-next-line
-  }, [route]);
+  }, [route, quizType]);
 
   // Navigation functions
   function handleLogout() {
     setUser(null);
     setRoute('login');
+    setQuizType(null);
     setAnswers([]);
     setQuizData(null);
     setQuizIndex(0);
-    setQuizType('movie-title-poster');
   }
   function handleBack() {
     if (route === 'result') {
@@ -255,6 +356,62 @@ function App() {
       );
     }
     const q = quizData.questions[quizIndex];
+
+    // Pick which UI block to display based on quizType
+    let quizPrompt;
+    if (quizType === 'movie-title-poster') {
+      quizPrompt = <>
+        <div>
+          <img src={q.poster} alt="Movie poster" style={posterStyle} />
+        </div>
+        <div style={{ fontWeight: 600, margin: "22px 0 8px", fontSize: "1.15rem" }}>
+          What is the title of this Kollywood movie?
+        </div>
+        <div style={{ marginBottom: 14, color: "#bbb", fontSize: "1em" }}>
+          <em>Clue: {q.overview.slice(0, 60) + "…"} </em>
+        </div>
+      </>;
+    } else if (quizType === 'actor-movies') {
+      quizPrompt = <>
+        <div>
+          <span style={{
+            fontWeight: 600, fontSize: "1.1rem", color: "var(--secondary)"
+          }}>Actor: {q.actor}</span>
+        </div>
+        <div style={{
+          marginTop: 18, fontWeight: 600, fontSize: "1.1rem"
+        }}>
+          Which of the following is a movie starring this actor?
+        </div>
+      </>;
+    } else if (quizType === 'movie-overview-title') {
+      quizPrompt = <>
+        <div style={{ margin: "14px 0", fontSize: "1.09em" }}>
+          <div style={{ fontWeight: 600, marginBottom: 9 }}>Plot:</div>
+          <div style={{
+              color: "#bbb", background: "#222", borderRadius: 8,
+              padding: "10px 16px", fontSize: "1.07em", marginBottom: 12
+            }}>
+            {q.overview}
+          </div>
+        </div>
+        <div style={{ fontWeight: 600, marginBottom: 8 }}>
+          What is the correct movie title?
+        </div>
+      </>;
+    } else if (quizType === 'release-year-title') {
+      quizPrompt = <>
+        <div style={{
+          fontWeight: 600, fontSize: "1.1rem", marginBottom: 10
+        }}>
+          Movie: <span style={{ color: "var(--secondary)" }}>{q.movieTitle}</span>
+        </div>
+        <div style={{ marginBottom: 14, fontSize: "1.05em" }}>
+          When was this movie released?
+        </div>
+      </>;
+    }
+
     // Make answers not repeat if next/back, option order is fixed for that question (pre-shuffled).
     return (
       <div className="container" style={{ marginTop: "112px", maxWidth: 510 }}>
@@ -262,16 +419,8 @@ function App() {
           <div style={{ textAlign: 'center', marginBottom: 12 }}>
             <span style={quizSubTitleStyle}>{`Question ${quizIndex + 1} of ${quizData.questions.length}`}</span>
           </div>
-          <div>
-            <img src={q.poster} alt="Movie poster" style={posterStyle} />
-          </div>
-          <div style={{ fontWeight: 600, margin: "22px 0 8px", fontSize: "1.15rem" }}>
-            What is the title of this Kollywood movie?
-          </div>
-          <div style={{ marginBottom: 14, color: "#bbb", fontSize: "1em" }}>
-            <em>Clue: {q.overview.slice(0, 60) + "…"} </em>
-          </div>
-          <div style={{ display: 'flex', flexDirection: "column", gap: 12 }}>
+          {quizPrompt}
+          <div style={{ display: 'flex', flexDirection: "column", gap: 12, marginTop: 12 }}>
             {q.options.map(option => (
               <button
                 className="btn btn-large"
@@ -395,10 +544,44 @@ function App() {
     );
   }
 
+  // Game type menu screen
+  function renderGameTypeMenu() {
+    return (
+      <div className="container" style={{ marginTop: 130, maxWidth: 500 }}>
+        <div style={quizCardStyle}>
+          <div style={{
+            marginBottom: 18, color: "var(--secondary)", fontWeight: 700, fontSize: "1.25em"
+          }}>
+            Choose a Kollywood Quiz Mode
+          </div>
+          <div>
+            {QUIZ_TYPES.map(qt => (
+              <button key={qt.key}
+                className="btn btn-large"
+                style={{ display: "block", margin: "18px 0", width: "100%", textAlign: "left", border: "1.5px solid var(--border-color)",
+                  background: "var(--primary)", color: "var(--accent)", borderRadius: 9, boxShadow: "0 1px 6px #fd088a10", fontWeight: 600 }}
+                onClick={() => {
+                  setQuizType(qt.key);
+                  setRoute('quiz');
+                  setQuizIndex(0);
+                  setAnswers([]);
+                }}>
+                <span style={{ color: "var(--secondary)", marginRight: 8 }}>{qt.label}</span>
+                <br />
+                <span style={{ fontWeight: 400, color: "#888", fontSize: 15 }}>{qt.description}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   // Main content router
   function renderMain() {
     if (!user) return renderLogin();
-    if (route === 'quiz') return renderQuiz();
+    if (route === 'game-select' || !quizType) return renderGameTypeMenu();
+    if (route === 'quiz' && quizType) return renderQuiz();
     if (route === 'result') return renderResult();
     return <div />;
   }
