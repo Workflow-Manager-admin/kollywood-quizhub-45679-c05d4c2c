@@ -9,6 +9,7 @@
 
 /* Removed any problematic PUBLIC_URL references that resulted in build failure.
    This file now only uses basic color variables for the required white, pink, and black theme. */
+/* Ensured no references to PUBLIC_URL exist to prevent build errors */
 
 body {
   margin: 0;

@@ -396,26 +396,48 @@ function App() {
         </div>
       </>;
     } else if (quizType === 'actor-movies') {
-      quizPrompt = <>
-        <div>
-          <span style={{
-            fontWeight: 600, fontSize: "1.1rem", color: "var(--secondary)"
+      quizPrompt = (
+        <>
+          <div style={{
+            margin: "24px 0 12px",
+            textAlign: "center",
           }}>
-            Character: {q.character ? q.character : "(unknown)"}
-          </span>
-        </div>
-        <div style={{
-          marginTop: 10, fontWeight: 400, fontSize: "1.08rem", color: "#be39af"
-        }}>
-          {/* Optionally show the actor name in smaller, subtle text */}
-          {q.actorName && <span>Played by: <span style={{color: "#ff9999"}}>{q.actorName}</span></span>}
-        </div>
-        <div style={{
-          marginTop: 18, fontWeight: 600, fontSize: "1.1rem"
-        }}>
-          Which of the following is a movie featuring this character?
-        </div>
-      </>;
+            <span
+              style={{
+                display: "inline-block",
+                padding: "11px 28px",
+                background: "var(--secondary)",
+                color: "var(--primary)",
+                borderRadius: "23px",
+                fontWeight: 700,
+                fontSize: "1.27rem",
+                letterSpacing: 0.14,
+                boxShadow: "0 2px 10px #fd088a18"
+              }}>
+              {/* Clue: Character */}
+              {q.character ? q.character : "(Unknown character)"}
+            </span>
+          </div>
+          <div style={{
+            margin: "0 0 6px",
+            textAlign: "center",
+            fontWeight: 400,
+            fontSize: "1.05rem",
+            color: "#be39af"
+          }}>
+            {/* Optionally show the actor name in smaller, subtle text */}
+            {q.actorName && <span>Played by <span style={{color: "#ff9999", fontWeight: 600}}>{q.actorName}</span></span>}
+          </div>
+          <div style={{
+            marginTop: 18,
+            textAlign: "center",
+            fontWeight: 600,
+            fontSize: "1.13rem"
+          }}>
+            Which of the following is a movie featuring this character?
+          </div>
+        </>
+      );
     } else if (quizType === 'movie-overview-title') {
       quizPrompt = <>
         <div style={{ margin: "14px 0", fontSize: "1.09em" }}>
