@@ -486,19 +486,22 @@ function pickRandom(arr, n) {
 // --- Styles ---
 const inputStyle = {
   padding: "11px 13px",
-  border: "1px solid #ccc",
-  borderRadius: 4,
+  border: "1.5px solid #fd088a55",
+  borderRadius: 5,
   fontSize: "1.09em",
-  background: "#222",
-  color: "#fff",
-  marginBottom: 3,
+  background: "#fff",
+  color: "#080808",
+  marginBottom: 4,
   outline: "none",
+  boxShadow: "0 1px 6px #fd088a06",
+  transition: "border-color 0.16s, box-shadow 0.16s"
 };
+// PUBLIC_INTERFACE
 const flatLinkStyle = {
   color: "#fd088a",
   background: "none",
   border: "none",
-  fontWeight: 500,
+  fontWeight: 600,
   fontSize: "1em",
   textAlign: "center",
   padding: 0,
@@ -507,23 +510,25 @@ const flatLinkStyle = {
   textDecoration: "underline"
 };
 const quizCardStyle = {
-  background: "#191929",
-  borderRadius: 13,
-  padding: "34px 23px 24px",
-  boxShadow: "0 2px 16px rgba(0,0,0,0.16)",
+  background: "#fff",
+  borderRadius: 15,
+  padding: "32px 22px 22px",
+  boxShadow: "0 2px 16px #fd088a14",
   margin: "0 auto",
   width: "100%",
   maxWidth: 430,
+  color: "#080808"
 };
+// PUBLIC_INTERFACE
 const quizSubTitleStyle = {
-  color: "#fd088a", fontWeight: 500, fontSize: "1.1em", letterSpacing: 0
+  color: "#fd088a", fontWeight: 600, fontSize: "1.12em", letterSpacing: 0.2
 };
 const posterStyle = {
   width: 180,
   height: 260,
   objectFit: "cover",
-  borderRadius: 7,
-  boxShadow: "0 2px 6px #282830a9",
+  borderRadius: 9,
+  boxShadow: "0 2px 16px #fd088a20"
 };
 
 export default App;
